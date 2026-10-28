@@ -152,6 +152,14 @@
 									<directory>${project.basedir}/frontend</directory>
 									<excludes>
 										<exclude>.idea/**</exclude>
+										<exclude>node_modules/**</exclude>
+										<exclude>dist/**</exclude>
+										<exclude>.vite/**</exclude>
+										<exclude>scripts/**</exclude>
+										<exclude>vite.config.js</exclude>
+										<exclude>package.json</exclude>
+										<exclude>package-lock.json</exclude>
+										<exclude>.gitignore</exclude>
 									</excludes>
 								</resource>
 							</resources>

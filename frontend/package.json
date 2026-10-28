@@ -1,0 +1,18 @@
+{
+  "name": "followup-saathi-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "FollowUp Saathi vanilla HTML/CSS/JS frontend, dev-served by Vite with a proxy to the Spring Boot API on :8080",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/copy-static.mjs",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true
+  }
+}
