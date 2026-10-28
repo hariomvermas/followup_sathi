@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### ADCode (AI IDE local state) ###
+.adcode/
+
+### Environment files (keep the example, never real secrets) ###
+.env
+.env.*
+!.env.example
+
+### Logs ###
+*.log
