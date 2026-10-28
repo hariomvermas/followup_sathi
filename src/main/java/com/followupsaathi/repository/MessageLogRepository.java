@@ -8,4 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MessageLogRepository extends JpaRepository<MessageLog, Long> {
 
     Page<MessageLog> findByEnquiryIdOrderBySentAtDesc(Long enquiryId, Pageable pageable);
+
+    /** Removes the whole business's message history during account deletion. */
+    void deleteByEnquiryBusinessId(Long businessId);
 }

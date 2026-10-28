@@ -41,4 +41,17 @@ public interface FollowUpRepository extends JpaRepository<FollowUp, Long> {
 
     /** Removes an enquiry's follow-ups when the enquiry is deleted. */
     void deleteByEnquiryId(Long enquiryId);
+
+    /** Follow-ups created inside a reporting window. */
+    long countByEnquiryBusinessIdAndCreatedAtBetween(Long businessId, Instant from, Instant to);
+
+    /** Current pending follow-ups of a business (any date). */
+    long countByEnquiryBusinessIdAndStatus(Long businessId, FollowUpStatus status);
+
+    /** All pending follow-ups of a business, soonest first. */
+    List<FollowUp> findByEnquiryBusinessIdAndStatusOrderByScheduledDateAsc(
+            Long businessId, FollowUpStatus status);
+
+    /** Removes every follow-up of a business during account deletion. */
+    void deleteByEnquiryBusinessId(Long businessId);
 }

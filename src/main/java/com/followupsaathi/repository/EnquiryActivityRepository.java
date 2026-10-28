@@ -12,4 +12,7 @@ public interface EnquiryActivityRepository extends JpaRepository<EnquiryActivity
 
     /** Small timelines are fetched whole, newest first. */
     List<EnquiryActivity> findTop50ByEnquiryIdOrderByCreatedAtDesc(Long enquiryId);
+
+    /** Removes the whole business's activity trail during account deletion. */
+    void deleteByEnquiryBusinessId(Long businessId);
 }

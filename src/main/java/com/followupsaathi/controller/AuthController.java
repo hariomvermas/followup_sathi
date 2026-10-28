@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +28,13 @@ public class AuthController {
 
     private final AuthService authService;
     private final CurrentUser currentUser;
+    private final CsrfTokenRepository csrfTokenRepository;
 
-    public AuthController(AuthService authService, CurrentUser currentUser) {
+    public AuthController(AuthService authService, CurrentUser currentUser,
+            CsrfTokenRepository csrfTokenRepository) {
         this.authService = authService;
         this.currentUser = currentUser;
+        this.csrfTokenRepository = csrfTokenRepository;
     }
 
     @PostMapping("/register")
@@ -59,10 +63,19 @@ public class AuthController {
     }
 
     @GetMapping("/csrf")
-    public Map<String, String> csrf(CsrfToken token) {
+    public Map<String, String> csrf(CsrfToken token, HttpServletRequest request,
+            HttpServletResponse response) {
         // Touching the token materializes the deferred XSRF-TOKEN cookie.
+        // Spring Security defers token generation, so load/generate it from
+        // the repository directly: the raw value here is exactly what the
+        // SPA must send back in the X-XSRF-TOKEN header.
+        CsrfToken loaded = csrfTokenRepository.loadToken(request);
+        if (loaded == null) {
+            loaded = csrfTokenRepository.generateToken(request);
+            csrfTokenRepository.saveToken(loaded, request, response);
+        }
         return Map.of(
-                "headerName", token.getHeaderName(),
-                "token", token.getToken());
+                "headerName", loaded.getHeaderName(),
+                "token", loaded.getToken());
     }
 }

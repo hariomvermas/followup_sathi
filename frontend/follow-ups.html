@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Follow-ups — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <div data-topbar></div>
+  <main class="container">
+    <div class="page-head">
+      <div>
+        <h1>Follow-up list</h1>
+        <div class="sub">Your daily calling list — overdue first, then today, then upcoming.</div>
+      </div>
+      <a class="btn btn-secondary" href="/enquiries.html">From an enquiry</a>
+    </div>
+
+    <div class="segments" role="group" aria-label="Filter by day">
+      <button type="button" data-bucket="ALL" aria-pressed="true" id="seg-all">All <span class="faint" id="cnt-all"></span></button>
+      <button type="button" data-bucket="OVERDUE" aria-pressed="false" id="seg-overdue">Overdue <span class="faint" id="cnt-overdue"></span></button>
+      <button type="button" data-bucket="TODAY" aria-pressed="false" id="seg-today">Today <span class="faint" id="cnt-today"></span></button>
+      <button type="button" data-bucket="UPCOMING" aria-pressed="false" id="seg-upcoming">Upcoming <span class="faint" id="cnt-upcoming"></span></button>
+    </div>
+
+    <p class="muted mt-2" style="font-size:var(--text-sm)" id="bucket-line"></p>
+
+    <section class="card" aria-label="Follow-ups">
+      <div class="rows" id="rows">
+        <div class="loading"><div class="spinner" aria-hidden="true"></div>Loading…</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/navigation.js"></script>
+  <script src="/js/follow-ups.js"></script>
+</body>
+</html>

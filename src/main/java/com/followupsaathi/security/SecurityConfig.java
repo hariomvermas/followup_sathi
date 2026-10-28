@@ -47,13 +47,20 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /** Exposed as a bean so /api/auth/csrf can hand out the raw cookie value. */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public CookieCsrfTokenRepository csrfTokenRepository() {
+        return CookieCsrfTokenRepository.withHttpOnlyFalse();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http,
+            CookieCsrfTokenRepository csrfTokenRepository) throws Exception {
         CsrfTokenRequestAttributeHandler rawHandler = new CsrfTokenRequestAttributeHandler();
 
         http
                 .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .csrfTokenRepository(csrfTokenRepository)
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
                         .ignoringRequestMatchers("/api/auth/**"))
                 .authorizeHttpRequests(auth -> auth

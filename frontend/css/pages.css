@@ -1,0 +1,232 @@
+/* Page-specific layout: dashboard tiles, detail header, follow-up cards. */
+
+/* ---------- Dashboard ---------- */
+.dash-actions {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+/* ---------- Enquiry detail header ---------- */
+.detail-head {
+  padding: var(--s-5);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.detail-head .identity {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+}
+
+.detail-head .avatar-lg {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 20px;
+  flex: none;
+}
+
+.detail-head .facts {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+
+.detail-grid {
+  display: grid;
+  gap: var(--s-5);
+}
+
+@media (min-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: start;
+  }
+}
+
+/* ---------- Message share actions ---------- */
+.share-row {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ---------- Follow-up list rows ---------- */
+.followup-date {
+  flex: none;
+  width: 58px;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 10px;
+  background: var(--bg-deep);
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.followup-date .d {
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.followup-date .m {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.followup-date.overdue {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---------- Reports ---------- */
+.report-range {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: var(--s-5);
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-3);
+}
+
+@media (min-width: 720px) {
+  .report-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.bar-row .bar-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  margin-bottom: 4px;
+}
+
+.bar-row .bar-top b {
+  font-variant-numeric: tabular-nums;
+}
+
+.bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width var(--speed-slow) var(--ease);
+}
+
+/* ---------- Settings nav pills ---------- */
+.settings-grid {
+  display: grid;
+  gap: var(--s-5);
+}
+
+@media (min-width: 900px) {
+  .settings-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: start;
+  }
+}
+
+.danger-zone {
+  border-color: color-mix(in srgb, var(--danger) 35%, var(--line));
+}
+
+.danger-zone .card-head {
+  border-bottom-color: color-mix(in srgb, var(--danger) 20%, var(--line));
+}
+
+/* ---------- Working-day chips ---------- */
+.day-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.day-chips label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 7px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  background: var(--surface);
+}
+
+.day-chips label:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* ---------- Onboarding step list ---------- */
+.onboard-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--s-5) 0 0;
+  display: grid;
+  gap: var(--s-3);
+}
+
+.onboard-list li {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.onboard-list .tick {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--faint);
+}
+
+.onboard-list li.done .tick {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.onboard-list li.done {
+  color: var(--ink);
+}

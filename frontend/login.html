@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <main class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="brand-mark" aria-hidden="true">FS</span>
+        <div>
+          <h1>Welcome back</h1>
+          <p>Log in to see today's follow-ups.</p>
+        </div>
+      </div>
+
+      <div id="banner" class="banner info hidden" role="alert"></div>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+          <small></small>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <small></small>
+        </div>
+        <button class="btn btn-primary" type="submit" style="width:100%">Log in</button>
+      </form>
+
+      <p class="auth-alt">New here? <a href="/register.html">Create an account</a></p>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var form = document.getElementById("login-form");
+      var banner = document.getElementById("banner");
+      var params = new URLSearchParams(location.search);
+
+      if (params.get("registered") === "1") {
+        banner.textContent = "Account created. Log in to continue.";
+        banner.classList.remove("hidden");
+      }
+      if (params.get("next")) {
+        banner.textContent = "Please log in to open that page.";
+        banner.classList.remove("hidden");
+      }
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        FSValidate.clearErrors(form);
+        var ok = FSValidate.validateForm(form, {
+          email: [FSValidate.rules.required, FSValidate.rules.email],
+          password: [FSValidate.rules.required]
+        });
+        if (!ok) return;
+
+        var button = form.querySelector("button[type=submit]");
+        try {
+          var me = await FSValidate.busyButton(
+            button, FSAuth.login(form.email.value.trim(), form.password.value),
+            { label: "Logging in…" });
+          var next = params.get("next");
+          var target = next && next.charAt(0) === "/" ? next : "/dashboard.html";
+          if (!me.hasBusiness) target = "/onboarding.html";
+          location.replace(target);
+        } catch (err) {
+          banner.textContent =
+            err.status === 401 ? "Email or password is incorrect." : err.message;
+          banner.classList.remove("hidden");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

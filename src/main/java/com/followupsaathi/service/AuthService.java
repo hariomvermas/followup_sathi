@@ -1,6 +1,7 @@
 package com.followupsaathi.service;
 
 import com.followupsaathi.config.TemplateDefaults;
+import com.followupsaathi.dto.AccountDtos;
 import com.followupsaathi.dto.AuthDtos;
 import com.followupsaathi.entity.Business;
 import com.followupsaathi.entity.MessageTemplate;
@@ -38,19 +39,22 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final com.followupsaathi.security.LoginRateLimiter rateLimiter;
     private final com.followupsaathi.security.SessionService sessionService;
+    private final AccountService accountService;
 
     public AuthService(UserRepository userRepository,
             BusinessRepository businessRepository,
             MessageTemplateRepository templateRepository,
             PasswordEncoder passwordEncoder,
             com.followupsaathi.security.LoginRateLimiter rateLimiter,
-            com.followupsaathi.security.SessionService sessionService) {
+            com.followupsaathi.security.SessionService sessionService,
+            AccountService accountService) {
         this.userRepository = userRepository;
         this.businessRepository = businessRepository;
         this.templateRepository = templateRepository;
         this.passwordEncoder = passwordEncoder;
         this.rateLimiter = rateLimiter;
         this.sessionService = sessionService;
+        this.accountService = accountService;
     }
 
     /** Creates the account, business profile and seed templates. */
@@ -142,6 +146,19 @@ public class AuthService {
         rateLimiter.reset(key);
         sessionService.create(user, httpResponse);
         return toAuthResponse(user);
+    }
+
+    /** Changes the owner's password (settings screen, spec section 4.12). */
+    @Transactional
+    public void changePassword(Long userId, AccountDtos.ChangePasswordRequest request) {
+        accountService.changePassword(userId, request);
+    }
+
+    /** Hard-deletes the account and every owned row; cannot be undone. */
+    @Transactional
+    public void deleteAccount(Long userId, AccountDtos.DeleteAccountRequest request,
+            HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        accountService.deleteAccount(userId, request, httpRequest, httpResponse);
     }
 
     /** Returns the authenticated user's session info. */

@@ -3,6 +3,7 @@ package com.followupsaathi.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Follow-ups are scheduled per day (the business works from a daily reminder
@@ -51,5 +52,25 @@ public class FollowUpDtos {
 
             @Size(max = 2000, message = "Notes must be at most 2000 characters")
             String notes) {
+    }
+
+    /** One row of a business-wide pending follow-up list. */
+    public record PendingItem(
+            Long followUpId,
+            Long enquiryId,
+            String customerName,
+            String customerPhone,
+            String serviceName,
+            String date,
+            String reason,
+            boolean overdue) {
+    }
+
+    /** Bucketed pending list: today, later, overdue. */
+    public record ListResponse(
+            long todayCount,
+            long upcomingCount,
+            long overdueCount,
+            List<PendingItem> items) {
     }
 }

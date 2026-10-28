@@ -68,9 +68,6 @@ public class Business {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    @OneToOne(mappedBy = "business", fetch = FetchType.LAZY)
-    private BusinessSettings settings;
-
     @OneToMany(mappedBy = "business", fetch = FetchType.LAZY)
     private List<Enquiry> enquiries = new ArrayList<>();
 
@@ -138,14 +135,6 @@ public class Business {
 
     public void setWorkingDays(String workingDays) {
         this.workingDays = workingDays;
-    }
-
-    public BusinessSettings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(BusinessSettings settings) {
-        this.settings = settings;
     }
 
     /** Safe accessor: returns the parsed zone, falling back to IST if invalid. */

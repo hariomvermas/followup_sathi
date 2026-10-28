@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Message templates — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <div data-topbar></div>
+  <main class="container">
+    <div class="page-head">
+      <div>
+        <h1>Message templates</h1>
+        <div class="sub">Reusable wording for follow-up messages. Nothing is sent automatically.</div>
+      </div>
+      <button class="btn btn-primary" id="new-btn" type="button">+ New template</button>
+    </div>
+
+    <section class="card" aria-label="Templates">
+      <div class="rows" id="rows">
+        <div class="loading"><div class="spinner" aria-hidden="true"></div>Loading…</div>
+      </div>
+    </section>
+
+    <div class="card card-pad mt-5">
+      <h2 style="font-size:var(--text-lg)">Placeholders</h2>
+      <p class="muted" style="font-size:var(--text-sm);margin-bottom:var(--s-2)">
+        These are replaced with the customer's details when the message is prepared:
+      </p>
+      <p class="muted" style="margin:0;font-family:var(--font-mono);font-size:var(--text-sm)">
+        {{customerName}} · {{businessName}} · {{serviceName}} · {{nextFollowUpDate}}
+      </p>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/navigation.js"></script>
+  <script src="/js/templates.js"></script>
+</body>
+</html>

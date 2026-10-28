@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reports — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <div data-topbar></div>
+  <main class="container">
+    <div class="page-head">
+      <div>
+        <h1>Reports</h1>
+        <div class="sub">How the month went. Counts are simple and honest.</div>
+      </div>
+      <button class="btn btn-secondary" id="export-btn" type="button">Download CSV</button>
+    </div>
+
+    <div class="segments" role="group" aria-label="Report period">
+      <button type="button" data-range="THIS_MONTH" aria-pressed="true">This month</button>
+      <button type="button" data-range="THIS_WEEK" aria-pressed="false">This week</button>
+      <button type="button" data-range="LAST_30_DAYS" aria-pressed="false">Last 30 days</button>
+      <button type="button" data-range="CUSTOM" aria-pressed="false">Custom</button>
+    </div>
+
+    <form class="card card-pad mt-2 hidden" id="custom-form" novalidate>
+      <div class="row wrap" style="align-items:flex-end;gap:var(--s-3)">
+        <div class="field" style="min-width:180px">
+          <label for="rep-from">From</label>
+          <input id="rep-from" name="from" type="date" required>
+          <small></small>
+        </div>
+        <div class="field" style="min-width:180px">
+          <label for="rep-to">To</label>
+          <input id="rep-to" name="to" type="date" required>
+          <small></small>
+        </div>
+        <button class="btn btn-primary" type="submit">Show</button>
+      </div>
+      <p class="muted mt-2" style="font-size:var(--text-sm);margin-bottom:0">
+        Both dates are required; the "to" date cannot be before the "from" date.
+      </p>
+    </form>
+
+    <div class="stat-grid mt-4" id="stats">
+      <div class="loading"><div class="spinner" aria-hidden="true"></div>Loading…</div>
+    </div>
+
+    <div class="split mt-5">
+      <section class="card card-pad" aria-label="Pipeline">
+        <h2>Pipeline right now</h2>
+        <div id="pipeline" class="mt-3"></div>
+      </section>
+      <section class="card card-pad" aria-label="About these numbers">
+        <h2>Reading these numbers</h2>
+        <ul class="muted mt-3" style="font-size:var(--text-sm);line-height:1.9;padding-left:18px;margin-bottom:0">
+          <li>Created counts enquiries first registered in the period.</li>
+          <li>Converted counts those that reached "Converted" in the period.</li>
+          <li>Completed counts follow-ups finished in the period.</li>
+          <li>Pending and pipeline counts cover all time, not just the period.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/navigation.js"></script>
+  <script src="/js/reports.js"></script>
+</body>
+</html>

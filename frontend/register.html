@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create account — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <main class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="brand-mark" aria-hidden="true">FS</span>
+        <div>
+          <h1>Create your account</h1>
+          <p>Free, and it takes a minute.</p>
+        </div>
+      </div>
+
+      <form id="register-form" novalidate>
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" autocomplete="name" maxlength="120" required>
+          <small></small>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" maxlength="255" required>
+          <small></small>
+        </div>
+        <div class="field">
+          <label for="mobile">Mobile <span class="faint">(optional)</span></label>
+          <input id="mobile" name="mobile" type="tel" autocomplete="tel" maxlength="20" inputmode="tel">
+          <small></small>
+        </div>
+        <div class="field">
+          <label for="password">Password <span class="faint">(8+ characters)</span></label>
+          <input id="password" name="password" type="password" autocomplete="new-password" required>
+          <small></small>
+        </div>
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required>
+          <small></small>
+        </div>
+        <button class="btn btn-primary" type="submit" style="width:100%">Create account</button>
+      </form>
+
+      <p class="auth-alt">Already have an account? <a href="/login.html">Log in</a></p>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var form = document.getElementById("register-form");
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        FSValidate.clearErrors(form);
+        var ok = FSValidate.validateForm(form, {
+          name: [FSValidate.rules.required, FSValidate.rules.maxLen(120)],
+          email: [FSValidate.rules.required, FSValidate.rules.email],
+          mobile: [FSValidate.rules.phone, FSValidate.rules.maxLen(20)],
+          password: [FSValidate.rules.required, FSValidate.rules.password],
+          confirmPassword: [FSValidate.rules.required]
+        });
+        var password = form.password.value;
+        if (ok && password !== form.confirmPassword.value) {
+          FSValidate.fieldError(form.confirmPassword, "Passwords do not match");
+          form.confirmPassword.focus();
+          ok = false;
+        }
+        if (!ok) return;
+
+        var button = form.querySelector("button[type=submit]");
+        try {
+          await FSValidate.busyButton(button, FSAuth.register({
+            name: form.name.value.trim(),
+            email: form.email.value.trim(),
+            mobile: form.mobile.value.trim(),
+            password: password,
+            confirmPassword: form.confirmPassword.value
+          }), { label: "Creating…" });
+          location.replace("/onboarding.html");
+        } catch (err) {
+          FSValidate.applyServerErrors(form, err.fieldErrors);
+          if (!err.fieldErrors) FSUi.toast(err.message, true);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

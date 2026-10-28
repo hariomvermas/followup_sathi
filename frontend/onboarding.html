@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set up your business — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <main class="auth-wrap">
+    <div class="auth-card" style="width:min(560px,100%)">
+      <div class="auth-brand">
+        <span class="brand-mark" aria-hidden="true">FS</span>
+        <div>
+          <h1>Tell us about your business</h1>
+          <p>This sets your time zone and the daily reminder list.</p>
+        </div>
+      </div>
+
+      <form id="onboard-form" novalidate>
+        <div class="field">
+          <label for="businessName">Business name</label>
+          <input id="businessName" name="businessName" type="text" maxlength="140" required
+                 placeholder="e.g. Sharma Electronics">
+          <small></small>
+        </div>
+        <div class="field">
+          <label for="businessCategory">Category</label>
+          <input id="businessCategory" name="businessCategory" type="text" maxlength="80" required
+                 list="category-list" placeholder="e.g. Electronics, Salon, Tailor">
+          <datalist id="category-list">
+            <option value="Electronics"></option>
+            <option value="Salon"></option>
+            <option value="Tailor"></option>
+            <option value="Mobile repair"></option>
+            <option value="Furniture"></option>
+            <option value="Jewellery"></option>
+            <option value="Coaching centre"></option>
+          </datalist>
+          <small></small>
+        </div>
+        <div class="row" style="gap:var(--s-3);align-items:flex-start">
+          <div class="field" style="flex:1">
+            <label for="timeZone">Time zone</label>
+            <input id="timeZone" name="timeZone" type="text" maxlength="40" value="Asia/Kolkata">
+            <small></small>
+          </div>
+          <div class="field" style="width:130px">
+            <label for="preferredLanguage">Language</label>
+            <select id="preferredLanguage" name="preferredLanguage">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+              <option value="mr">मराठी</option>
+              <option value="ta">தமிழ்</option>
+              <option value="bn">বাংলা</option>
+              <option value="gu">ગુજરાતી</option>
+            </select>
+            <small></small>
+          </div>
+        </div>
+        <div class="field">
+          <label>Working days</label>
+          <div class="day-chips" id="day-chips">
+            <label><input type="checkbox" name="workingDays" value="1" checked>Mon</label>
+            <label><input type="checkbox" name="workingDays" value="2" checked>Tue</label>
+            <label><input type="checkbox" name="workingDays" value="3" checked>Wed</label>
+            <label><input type="checkbox" name="workingDays" value="4" checked>Thu</label>
+            <label><input type="checkbox" name="workingDays" value="5" checked>Fri</label>
+            <label><input type="checkbox" name="workingDays" value="6" checked>Sat</label>
+            <label><input type="checkbox" name="workingDays" value="0">Sun</label>
+          </div>
+        </div>
+        <div class="row" style="gap:var(--s-3);align-items:flex-start">
+          <div class="field" style="flex:1">
+            <label for="reminderTime">Daily reminder time</label>
+            <input id="reminderTime" name="reminderTime" type="time" value="10:00" required>
+            <small></small>
+          </div>
+          <div class="field" style="flex:1.4">
+            <label for="reminderEnabled">Reminder list</label>
+            <select id="reminderEnabled" name="reminderEnabled">
+              <option value="true">Enabled</option>
+              <option value="false">Disabled</option>
+            </select>
+            <small></small>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit" style="width:100%">Save and open dashboard</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var form = document.getElementById("onboard-form");
+
+      (async function init() {
+        try {
+          var me = await FSAuth.requireAuth({});
+          if (!me) return;
+          if (me.hasBusiness) location.replace("/dashboard.html");
+          var biz = await FSApi.get("/api/business");
+          if (biz && biz.id) {
+            form.businessName.value = biz.businessName || "";
+            form.businessCategory.value = biz.businessCategory || "";
+            form.timeZone.value = biz.timeZone || "Asia/Kolkata";
+            form.preferredLanguage.value = biz.preferredLanguage || "en";
+            form.reminderTime.value = biz.reminderTime || "10:00";
+            form.reminderEnabled.value = String(biz.reminderEnabled !== false);
+            [].forEach.call(form.workingDays, function (box) {
+              box.checked = !biz.workingDays || biz.workingDays.indexOf(Number(box.value)) !== -1;
+            });
+          }
+        } catch (err) {
+          FSUi.toast(err.message, true);
+        }
+      })();
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        FSValidate.clearErrors(form);
+        var ok = FSValidate.validateForm(form, {
+          businessName: [FSValidate.rules.required, FSValidate.rules.maxLen(140)],
+          businessCategory: [FSValidate.rules.required, FSValidate.rules.maxLen(80)],
+          timeZone: [FSValidate.rules.required, FSValidate.rules.maxLen(40)],
+          reminderTime: [FSValidate.rules.required, FSValidate.rules.time]
+        });
+        if (!ok) return;
+        try {
+          new Intl.DateTimeFormat("en", { timeZone: form.timeZone.value.trim() });
+        } catch (tzError) {
+          FSValidate.fieldError(form.timeZone, "Unknown time zone (e.g. Asia/Kolkata)");
+          form.timeZone.focus();
+          ok = false;
+        }
+        if (!ok) return;
+
+        var days = [].filter.call(form.workingDays, function (box) { return box.checked; })
+          .map(function (box) { return Number(box.value); });
+
+        var payload = {
+          businessName: form.businessName.value.trim(),
+          businessCategory: form.businessCategory.value.trim(),
+          timeZone: form.timeZone.value.trim() || "Asia/Kolkata",
+          preferredLanguage: form.preferredLanguage.value,
+          workingDays: days,
+          reminderEnabled: form.reminderEnabled.value === "true",
+          reminderTime: form.reminderTime.value
+        };
+
+        var button = form.querySelector("button[type=submit]");
+        try {
+          await FSValidate.busyButton(button, FSApi.put("/api/business", payload),
+            { label: "Saving…" });
+          location.replace("/dashboard.html");
+        } catch (err) {
+          FSValidate.applyServerErrors(form, err.fieldErrors);
+          if (!err.fieldErrors) FSUi.toast(err.message, true);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

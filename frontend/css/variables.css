@@ -1,0 +1,124 @@
+/* Design tokens for FollowUp Saathi.
+   A quiet, high-contrast system for a daily operations tool: warm paper
+   background, ink text, one teal accent, semantic status colours. */
+:root {
+  /* Colour: surfaces and text */
+  --bg: #f5f6f2;
+  --bg-deep: #ecefe8;
+  --surface: #ffffff;
+  --surface-sunken: #fafbf8;
+  --ink: #1d2623;
+  --ink-soft: #3f4c48;
+  --muted: #5d6b66;
+  --faint: #8a968f;
+  --line: #e2e6df;
+  --line-strong: #c9d0c7;
+
+  /* Colour: accent and semantics */
+  --accent: #0e7a6e;
+  --accent-strong: #0a5f56;
+  --accent-soft: #e2f2ef;
+  --accent-contrast: #ffffff;
+  --ok: #1a7a43;
+  --ok-soft: #e4f3e9;
+  --warn: #9a5b09;
+  --warn-soft: #fbf1df;
+  --danger: #b03a30;
+  --danger-soft: #fbe9e6;
+  --info: #2a5fbf;
+  --info-soft: #e8eefb;
+
+  /* Status hues (enquiry lifecycle) */
+  --st-new: #2a5fbf;
+  --st-contacted: #7a5ea8;
+  --st-interested: #0e7a6e;
+  --st-follow: #9a5b09;
+  --st-converted: #1a7a43;
+  --st-lost: #8a4a43;
+
+  /* Type */
+  --font-sans: "Segoe UI", system-ui, -apple-system, "Noto Sans", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, "Segoe UI Mono", monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --leading: 1.55;
+
+  /* Space (4px scale) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+
+  /* Shape and elevation */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --shadow-1: 0 1px 2px rgba(29, 38, 35, 0.06), 0 1px 6px rgba(29, 38, 35, 0.05);
+  --shadow-2: 0 4px 14px rgba(29, 38, 35, 0.1), 0 2px 4px rgba(29, 38, 35, 0.06);
+  --shadow-3: 0 12px 40px rgba(29, 38, 35, 0.18);
+
+  /* Layout */
+  --topbar-h: 58px;
+  --container: 1080px;
+  --container-wide: 1240px;
+  --topbar-bg: rgba(255, 255, 255, 0.92);
+
+  /* Motion */
+  --speed: 160ms;
+  --speed-slow: 280ms;
+  --ease: cubic-bezier(0.3, 0.7, 0.4, 1);
+
+  /* Focus */
+  --focus-ring: 0 0 0 3px rgba(14, 122, 110, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141a18;
+    --bg-deep: #10150f;
+    --surface: #1d2422;
+    --surface-sunken: #171d1b;
+    --ink: #e8ece8;
+    --ink-soft: #c4ccc7;
+    --muted: #99a49e;
+    --faint: #6f7a74;
+    --line: #2b332f;
+    --line-strong: #3d4741;
+
+    --accent: #34b39f;
+    --accent-strong: #5ccab8;
+    --accent-soft: #16332e;
+    --accent-contrast: #08201c;
+    --ok: #4caf7d;
+    --ok-soft: #16311f;
+    --warn: #d9a04a;
+    --warn-soft: #33260f;
+    --danger: #e0705f;
+    --danger-soft: #3a1d18;
+    --info: #7ba2ef;
+    --info-soft: #17233d;
+
+    --st-new: #7ba2ef;
+    --st-contacted: #b39ae0;
+    --st-interested: #4fc0a9;
+    --st-follow: #d9a04a;
+    --st-converted: #5ec489;
+    --st-lost: #d98d80;
+
+    --topbar-bg: rgba(29, 36, 34, 0.92);
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 6px rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 4px 14px rgba(0, 0, 0, 0.45);
+    --shadow-3: 0 12px 40px rgba(0, 0, 0, 0.55);
+    --focus-ring: 0 0 0 3px rgba(52, 179, 159, 0.4);
+  }
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <div data-topbar></div>
+  <main class="container">
+    <div class="page-head">
+      <div>
+        <h1>Today</h1>
+        <div class="sub" id="biz-line">Loading…</div>
+      </div>
+      <div class="dash-actions">
+        <a class="btn btn-primary" href="/enquiry-details.html?new=1">+ Add enquiry</a>
+        <a class="btn btn-secondary" href="/follow-ups.html">Open follow-up list</a>
+      </div>
+    </div>
+
+    <section class="stat-grid" id="stat-grid" aria-label="Summary">
+      <div class="card stat"><span class="num" id="st-total">–</span><span class="lbl">Enquiries</span></div>
+      <div class="card stat good"><span class="num" id="st-due">–</span><span class="lbl">Follow-ups today</span></div>
+      <div class="card stat alert"><span class="num" id="st-overdue">–</span><span class="lbl">Overdue</span></div>
+      <div class="card stat"><span class="num" id="st-converted">–</span><span class="lbl">Converted</span></div>
+    </section>
+
+    <div class="split">
+      <section class="card" aria-label="Today and overdue follow-ups">
+        <div class="card-head">
+          <h2>Follow-ups to act on</h2>
+          <a class="btn btn-ghost btn-sm" href="/follow-ups.html">See all</a>
+        </div>
+        <div class="rows" id="today-rows">
+          <div class="loading"><div class="spinner" aria-hidden="true"></div>Loading…</div>
+        </div>
+      </section>
+
+      <section class="card" aria-label="Enquiry pipeline">
+        <div class="card-head">
+          <h2>Pipeline</h2>
+          <a class="btn btn-ghost btn-sm" href="/enquiries.html">All enquiries</a>
+        </div>
+        <div class="card-body" id="pipeline-body">
+          <div class="loading"><div class="spinner" aria-hidden="true"></div>Loading…</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/navigation.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

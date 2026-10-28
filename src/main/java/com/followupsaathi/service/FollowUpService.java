@@ -16,6 +16,7 @@ import com.followupsaathi.repository.FollowUpRepository;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,6 +126,66 @@ public class FollowUpService {
                 .findByEnquiryIdOrderByScheduledDateDesc(enquiry.getId()).stream()
                 .map(this::toView)
                 .toList();
+    }
+
+    /**
+     * The business-wide pending list for the dedicated follow-ups screen:
+     * overdue and today first (in that order), then upcoming.
+     */
+    @Transactional(readOnly = true)
+    public FollowUpDtos.ListResponse listPending(Long userId, String bucket) {
+        var business = businessService.requireBusiness(userId);
+        Long businessId = business.getId();
+        ZoneId zone = business.zoneId();
+        LocalDate today = LocalDate.now(zone);
+
+        List<FollowUp> pending = followUpRepository
+                .findByEnquiryBusinessIdAndStatusOrderByScheduledDateAsc(
+                        businessId, FollowUpStatus.PENDING);
+
+        List<FollowUpDtos.PendingItem> overdueItems = new ArrayList<>();
+        List<FollowUpDtos.PendingItem> todayItems = new ArrayList<>();
+        List<FollowUpDtos.PendingItem> upcomingItems = new ArrayList<>();
+        for (FollowUp f : pending) {
+            FollowUpDtos.PendingItem item = toPendingItem(f, today);
+            if (f.getScheduledDate().isBefore(today)) {
+                overdueItems.add(item);
+            } else if (f.getScheduledDate().isEqual(today)) {
+                todayItems.add(item);
+            } else {
+                upcomingItems.add(item);
+            }
+        }
+
+        List<FollowUpDtos.PendingItem> items;
+        String scope = bucket == null ? "ALL" : bucket.trim().toUpperCase();
+        items = switch (scope) {
+            case "TODAY" -> todayItems;
+            case "UPCOMING" -> upcomingItems;
+            case "OVERDUE" -> overdueItems;
+            default -> {
+                List<FollowUpDtos.PendingItem> merged = new ArrayList<>();
+                merged.addAll(overdueItems);
+                merged.addAll(todayItems);
+                merged.addAll(upcomingItems);
+                yield merged;
+            }
+        };
+        return new FollowUpDtos.ListResponse(todayItems.size(), upcomingItems.size(),
+                overdueItems.size(), items);
+    }
+
+    private FollowUpDtos.PendingItem toPendingItem(FollowUp f, LocalDate today) {
+        Enquiry enquiry = f.getEnquiry();
+        return new FollowUpDtos.PendingItem(
+                f.getId(),
+                enquiry.getId(),
+                enquiry.getCustomerName(),
+                enquiry.getPhoneNumber() == null ? "" : enquiry.getPhoneNumber(),
+                enquiry.getServiceName(),
+                f.getScheduledDate().toString(),
+                f.getReason(),
+                f.isOverdue(today));
     }
 
     /** Today's follow-ups plus everything still pending from earlier days. */

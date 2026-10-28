@@ -12,4 +12,7 @@ public interface MessageTemplateRepository extends JpaRepository<MessageTemplate
     Optional<MessageTemplate> findByIdAndBusinessId(Long id, Long businessId);
 
     boolean existsByBusinessIdAndTemplateNameIgnoreCase(Long businessId, String templateName);
+
+    /** Removes every template of a business during account deletion. */
+    void deleteByBusinessId(Long businessId);
 }

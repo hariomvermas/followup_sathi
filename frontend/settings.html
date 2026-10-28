@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings — FollowUp Saathi</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <div data-topbar></div>
+  <main class="container">
+    <div class="page-head">
+      <div>
+        <h1>Settings</h1>
+        <div class="sub">Your business profile, reminder preferences and account.</div>
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <section class="card card-pad" aria-label="Business profile">
+        <h2>Business profile</h2>
+        <p class="muted mt-1" style="font-size:var(--text-sm)">
+          Used on every screen and in message templates.
+        </p>
+        <form id="biz-form" class="mt-4" novalidate>
+          <div class="field">
+            <label for="biz-name">Business name *</label>
+            <input id="biz-name" name="businessName" type="text" maxlength="140" required>
+            <small></small>
+          </div>
+          <div class="field">
+            <label for="biz-category">Business type *</label>
+            <input id="biz-category" name="businessCategory" type="text" maxlength="80"
+              placeholder="Salon, coaching centre, electronics repair…" required>
+            <small></small>
+          </div>
+          <div class="field">
+            <label for="biz-tz">Time zone</label>
+            <input id="biz-tz" name="timeZone" type="text" maxlength="40"
+              placeholder="Asia/Kolkata">
+            <small></small>
+            <p class="muted" style="font-size:var(--text-xs);margin:4px 0 0">
+              Follow-up days are counted in this zone. Example: Asia/Kolkata.
+            </p>
+          </div>
+          <button class="btn btn-primary mt-2" type="submit" id="biz-save">Save profile</button>
+        </form>
+      </section>
+
+      <div>
+        <section class="card card-pad" aria-label="Reminders">
+          <h2>Reminders</h2>
+          <p class="muted mt-1" style="font-size:var(--text-sm)">
+            A daily on-screen reminder for due follow-ups. Nothing is sent automatically.
+          </p>
+          <form id="rem-form" class="mt-4" novalidate>
+            <div class="field">
+              <label style="display:flex;align-items:center;gap:8px">
+                <input id="rem-enabled" name="reminderEnabled" type="checkbox">
+                Show the daily reminder on the dashboard
+              </label>
+            </div>
+            <div class="field">
+              <label for="rem-time">Reminder time *</label>
+              <input id="rem-time" name="reminderTime" type="time" required>
+              <small></small>
+            </div>
+            <div class="field">
+              <label>Working days</label>
+              <div class="day-chips" id="day-chips"></div>
+              <small></small>
+            </div>
+            <button class="btn btn-primary mt-2" type="submit" id="rem-save">Save reminders</button>
+          </form>
+        </section>
+
+        <section class="card card-pad mt-5" aria-label="Change password">
+          <h2>Change password</h2>
+          <form id="pw-form" class="mt-4" novalidate>
+            <div class="field">
+              <label for="pw-current">Current password *</label>
+              <input id="pw-current" name="currentPassword" type="password"
+                autocomplete="current-password" required>
+              <small></small>
+            </div>
+            <div class="field">
+              <label for="pw-new">New password *</label>
+              <input id="pw-new" name="newPassword" type="password"
+                autocomplete="new-password" minlength="8" maxlength="72" required>
+              <small></small>
+            </div>
+            <div class="field">
+              <label for="pw-confirm">Confirm new password *</label>
+              <input id="pw-confirm" name="confirmPassword" type="password"
+                autocomplete="new-password" required>
+              <small></small>
+            </div>
+            <button class="btn btn-primary mt-2" type="submit" id="pw-save">Change password</button>
+          </form>
+        </section>
+
+        <section class="card card-pad mt-5 danger-zone" aria-label="Delete account">
+          <h2>Delete account</h2>
+          <p class="muted mt-1" style="font-size:var(--text-sm)">
+            Removes your login, business, enquiries, follow-ups, templates and message
+            history permanently. This cannot be undone.
+          </p>
+          <form id="del-form" class="mt-4" novalidate>
+            <div class="field">
+              <label for="del-password">Your password *</label>
+              <input id="del-password" name="password" type="password"
+                autocomplete="current-password" required>
+              <small></small>
+            </div>
+            <div class="field">
+              <label for="del-confirm">Type DELETE to confirm *</label>
+              <input id="del-confirm" name="confirmText" type="text"
+                autocomplete="off" placeholder="DELETE" required>
+              <small></small>
+            </div>
+            <button class="btn btn-danger mt-2" type="submit" id="del-btn">Delete my account</button>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/navigation.js"></script>
+  <script src="/js/settings.js"></script>
+</body>
+</html>
